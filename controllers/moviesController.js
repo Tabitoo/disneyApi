@@ -8,98 +8,103 @@ const { json } = require("express");
 module.exports = {
     getMovies : (req,res) => {
 
-        db.Movies.findAll()
-        .then(response => {
+        if(Object.keys(req.query).length === 0){
+            db.Movies.findAll()
+            .then(response => {
+    
+                let movies = []; 
+    
+                response.forEach(movie => {
+                    let body = {
+                        title : movie.title,
+                        image : movie.image,
+                        date : movie.date
+                    }
+    
+                    movies.push(body)
+                    
+                });
+    
+                res.status(200).json({
+                    meta : {
+                        status : 200,
+                        msg : "ok"
+                    },
+                    data : movies
+                })
+            })
+            .catch(error => console.log(error))
 
-            let movies = []; 
+        } else{
+            const {title,genre,order} = req.query;
 
-            response.forEach(movie => {
-                let body = {
-                    title : movie.title,
-                    image : movie.image,
-                    date : movie.date
+            console.log(title)
+            console.log(genre)
+            console.log(order)
+
+            async function pepe(){
+                
+                if(title != undefined){
+                    return await db.Movies.findAll({
+                        where : {
+                            title : {
+                                [Op.like] :  `%${req.query.title}%`
+                            }, 
+                        },
+                        include : {
+                            model : db.Genres,
+                            as : "Generos"
+                        }
+                    })
+                }
+                else if(genre != undefined){
+                    return await db.Movies.findAll({
+                        include : {
+                            model : db.Genres,
+                            where : {
+                                id : genre
+                            },
+                            as : "Generos"
+                        }
+                    })
+                }
+                else if(order != undefined){
+                    return await db.Movies.findAll({
+                        order : [
+                            ['date', order]
+                        ]
+                    })
                 }
 
-                movies.push(body)
-                
-            });
-
-            res.status(200).json({
-                meta : {
-                    status : 200,
-                    msg : "ok"
-                },
-                data : movies
-            })
-        })
-        .catch(error => console.log(error))
-
-    },
-    searchMovies : (req,res) => {
-        const {title,genre,order} = req.query;
-
-        console.log(title)
-        console.log(genre)
-        console.log(order)
-
-        async function pepe(){
-            
-            if(title != undefined){
-                return await db.Movies.findAll({
-                    where : {
-                        title : {
-                            [Op.like] :  `%${req.query.title}%`
-                        }, 
-                    },
-                    include : {
-                        model : db.Genres,
-                        as : "Generos"
-                    }
-                })
             }
-            else if(genre != undefined){
-                return await db.Movies.findAll({
-                    include : {
-                        model : db.Genres,
-                        where : {
-                            id : genre
+
+            pepe()
+            .then(response => {
+                    
+                if(response.length != 0){
+                    return res.status(200).json({
+                        meta : {
+                            status : 200,
+                            msg : "Ok"
                         },
-                        as : "Generos"
+                        data : response
+                    })
+
+                }
+                res.status(404).json({
+                    meta : {
+                        status : 404,
+                        msg: "No se encontraron resultados"
                     }
-                })
-            }
-            else if(order != undefined){
-                return await db.Movies.findAll({
-                    order : [
-                        ['date', order]
-                    ]
-                })
-            }
+                }) 
+                
+            })
+            .catch(error => console.log(error))  
+
 
         }
 
-        pepe()
-        .then(response => {
-                
-            if(response != null){
-                return res.status(200).json({
-                    meta : {
-                        status : 200,
-                        msg : "Ok"
-                    },
-                    data : response
-                })
-
-            }
-            res.status(404).json({
-                meta : {
-                    status : 404,
-                    msg: "No se encontraron resultados"
-                }
-            }) 
-            
-        })
-        .catch(error => console.log(error))  
+       
 
     },
     getMovie : (req,res) => {

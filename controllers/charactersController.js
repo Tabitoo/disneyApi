@@ -5,34 +5,32 @@ const {Op,Sequelize} = require('sequelize');
 module.exports = {
     getCharacters : (req,res) => {
 
-        console.log(typeof(req.query))
-
         if(Object.keys(req.query).length === 0){
 
             db.Characters.findAll()
-        .then(response => {
+            .then(response => {
 
-            let characters = [];
+                let characters = [];
 
-            response.forEach(character => {
-                let body = {
-                    name : character.name,
-                    image : character.image,
-                }
+                response.forEach(character => {
+                    let body = {
+                        name : character.name,
+                        image : character.image,
+                    }
 
-                characters.push(body)
-                
-            });
+                    characters.push(body)
+                    
+                });
 
-            res.status(200).json({
-                meta : {
-                    status : 200,
-                    msg : "ok"
-                },
-                data : characters
+                res.status(200).json({
+                    meta : {
+                        status : 200,
+                        msg : "ok"
+                    },
+                    data : characters
+                })
             })
-        })
-        .catch(error => d.log(error))
+            .catch(error => d.log(error))
 
         } else{
 
@@ -94,7 +92,6 @@ module.exports = {
             .then(response => {
                 console.log(response.length) 
                 if( response.length != 0){
-                    
                     return res.status(200).json({
                         meta : {
                             status : 200,
