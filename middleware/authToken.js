@@ -13,15 +13,11 @@ module.exports = (req,res,next) => {
             }
         })
     }
-    
     try {
         const verifyToken = jwt.verify(token,"MySecret");
-
-        console.log(verifyToken)
     
         db.Users.findByPk(verifyToken.id)
         .then(response => {
-            console.log(response)
             if(!response){
                 return res.status(404).json({
                     meta : {
@@ -34,8 +30,6 @@ module.exports = (req,res,next) => {
             next()
         })
         .catch(error => console.log(error))
-        
-
         
     } catch (error) {
         console.log(error)
