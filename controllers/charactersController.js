@@ -171,7 +171,25 @@ module.exports = {
                 data : result
             })
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            console.log(error)
+            let errores = []
+            error.errors.forEach(error => {
+                if(error.type === "notNull Violation"){
+                    errores.push(`El campo ${error.path} no puede ser nulo`)
+                }else{
+                    errores.push(error.message)
+                }
+                
+            });
+            
+            res.status(400).json({
+                meta : {
+                    status : 400,
+                    errors : errores
+                }
+            })
+        })
     },
 
     editCharacter : (req,res) => {

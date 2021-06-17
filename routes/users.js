@@ -6,6 +6,6 @@ var router = express.Router();
 
 
 router.post('/register', usercontroller.Register);
-//router.post('/create');
+router.post('/login',usercontroller.login);
 
 module.exports = router;

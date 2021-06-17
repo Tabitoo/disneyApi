@@ -23,15 +23,11 @@ module.exports = (sequelize,dataTypes) => {
             }
         },
         password : {
-            type : dataTypes.STRING(45),
+            type : dataTypes.STRING(150),
             validate : {
                 notEmpty : {
                     msg : "La contraseña no puede estar vacia"
                 },
-                len : {
-                    args : [6,12],
-                    msg : "La contraseña debe tener como minimo 6 y maximo 12 caracteres"
-                }
             }
         }
     }
