@@ -8,4 +8,4 @@ router.get('/', charactercontroller.getCharacters);
 router.get('/:id', charactercontroller.getCharacter);
 router.post('/create', charactercontroller.createCharacter);
 
-module.exports = router;
+module.exports = router; 
