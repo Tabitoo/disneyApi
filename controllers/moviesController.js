@@ -102,10 +102,7 @@ module.exports = {
             .catch(error => console.log(error))  
 
 
-        }
-
-       
-
+        }       
     },
     getMovie : (req,res) => {
         db.Movies.findByPk(req.params.id,{

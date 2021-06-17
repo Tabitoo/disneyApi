@@ -1,11 +1,11 @@
 const { request } = require('express');
 var express = require('express');
-const charactercontroller = require('../controllers/charactersController');
+const usercontroller = require('../controllers/usersController');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', charactercontroller.getCharacters);
-router.get('/:id', charactercontroller.getCharacter);
-router.post('/create', charactercontroller.createCharacter);
+
+
+router.post('/register', usercontroller.Register);
+//router.post('/create');
 
 module.exports = router;
