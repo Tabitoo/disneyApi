@@ -47,11 +47,4 @@ module.exports = {
 
     },
 
-    editGenre : (req,res) => {
-
-    },
-
-    deleteGenre : (req,res) => {
-        
-    }
 }

@@ -16,6 +16,7 @@ module.exports = {
     
                 response.forEach(movie => {
                     let body = {
+                        id : movie.id,
                         title : movie.title,
                         image : movie.image,
                         date : movie.date
@@ -198,28 +199,51 @@ module.exports = {
         })
         .then(result => {
             return res.status(200).json({
-                status : {
-                    msg : "ok"
+                meta : {
+                    status : 200,
+                    msg : "pelicula actualizada"
                 },
-
                 data : result
             })
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            console.log(error)
+            let errores = [];
+            error.errors.forEach(error => {
 
+                errores.push(error.message) 
+
+            });
+            
+            res.status(400).json({
+                meta : {
+                    status : 400,
+                    errors : errores
+                }
+            })
+        })
 
     },
     deleteMovie : (req,res) => {
-        db.Movies.delete({
+        
+        db.Movies.destroy({
             where : {
                 id : req.params.id
             }
         })
         .then(result => {
-            return res.status(200).json({
-                status : 200,
-                msg : "Elemento borrado correctamente"
+            console.log(result)
+            if(result != 0){
+                return res.status(200).json({
+                    status : 200,
+                    msg : "Elemento borrado correctamente"
+                })
+            }
+            res.status(404).json({
+                status : 404,
+                msg : "Pelicula no encontrada"
             })
+            
         })
         .catch(error => console.log(error))
         

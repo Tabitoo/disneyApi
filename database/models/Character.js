@@ -27,7 +27,7 @@ module.exports = (sequelize,dataTypes) => {
                     msg : "El campo Edad no puede estar vacio"
                 },
                 isInt : {
-                    msg : "Solo se aceptan digitos"
+                    msg : "Solo se aceptan digitos (field age)"
                 }
             }
         },
@@ -39,7 +39,7 @@ module.exports = (sequelize,dataTypes) => {
                     msg : "El campo Peso no puede estar vacio"
                 },
                 isFloat : {
-                    msg : "El numero debe tener decimal"
+                    msg : "El numero debe tener decimal (field weight)"
                 }
             }
         },

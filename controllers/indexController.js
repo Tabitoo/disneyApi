@@ -13,13 +13,5 @@ module.exports = {
         }) 
 
     },
-
-    userRegister : (req,res) => {
-
-    },
-
-    userLogin : (req,res) => {
-
-    }
     
 }

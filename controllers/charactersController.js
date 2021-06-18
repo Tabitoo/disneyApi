@@ -156,9 +156,12 @@ module.exports = {
 
        const {name, age, weight, history, image} = req.body;
 
+       console.log(age);
+       console.log(typeof(age))
+
         db.Characters.create({
             name,
-            age,
+            age : Number(age),
             weight,
             history,
             image
@@ -209,11 +212,12 @@ module.exports = {
             }
         })
         .then(result => {
+            console.log(result)
             return res.status(200).json({
-                status : {
-                    msg : "ok"
+                meta : {
+                    status : 200,
+                    msg : "Personaje actualizado"
                 },
-
                 data : result
             })
         })
@@ -221,12 +225,9 @@ module.exports = {
             console.log(error)
             let errores = [];
             error.errors.forEach(error => {
-                if(error.type === "notNull Violation"){
-                    errores.push(`El campo ${error.path} no puede ser nulo`)
-                }else{
-                    errores.push(error.message)
-                }
-                
+
+                errores.push(error.message) 
+
             });
             
             res.status(400).json({
@@ -241,18 +242,26 @@ module.exports = {
 
     deleteCharacter : (req,res) => {
 
-        db.Characters.delete({
+        
+        db.Characters.destroy({
             where : {
                 id : req.params.id
             }
         })
         .then(result => {
-            return res.status(200).json({
-                status : 200,
-                msg : "Elemento borrado correctamente"
+            console.log(result)
+            if(result != 0){
+                return res.status(200).json({
+                    status : 200,
+                    msg : "Elemento borrado correctamente"
+                })
+            }
+            res.status(404).json({
+                status : 404,
+                msg : "Personaje no encontrado"
             })
+            
         })
         .catch(error => console.log(error))
-
     }
 }

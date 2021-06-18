@@ -25,14 +25,14 @@ module.exports = {
             }
         }
 
-        if(email == undefined){
+        if(email == undefined || password == undefined){
             return res.status(400).json({
                 meta : {
                     status : 400,
-                    msg : "El campo email no puede ser nulo"
+                    msg : "campo email o password nulo"
                 }
             })
-        } 
+        }
         else if(password.length < 6 || password.length > 12 ){
             return res.status(500).json({
                 meta : {
@@ -108,6 +108,15 @@ module.exports = {
     },
     login : (req,res) => {
         const {email, password} = req.body;
+
+        if(email == undefined || password == undefined){
+            return res.status(400).json({
+                meta : {
+                    status : 400,
+                    msg : "campo email o password nulo"
+                }
+            })
+        } 
 
         db.Users.findOne({
             where : {
