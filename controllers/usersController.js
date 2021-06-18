@@ -8,16 +8,14 @@ module.exports = {
 
         const {email,password} = req.body;
 
-        async function createUser(){
-            let user = await db.Users.findOne({where : {email : email}});
-
-            console.log(email)
-            console.log(user)
-
-            if(!user === ""){
+        async function createUser(correo,pass){
+        
+            let user = await db.Users.findOne({where : {email : correo}});
+      
+            if(user === null){
                 return await db.Users.create({
                     email,
-                    password : bcrypt.hashSync(password,12)
+                    password : bcrypt.hashSync(pass,12)
                 })
             }else {
                 return 0
@@ -41,10 +39,8 @@ module.exports = {
             })
         }
         else {
-            createUser()
+            createUser(email,password)
             .then(response => {
-
-                console.log(response)
 
                 if(response != 0){
                     const token = jwt.sign({id : response.id}, "MySecret", {expiresIn : 60 * 60 * 24})
@@ -96,8 +92,7 @@ module.exports = {
             }
         })
         .then(user => {
-            console.log(user.password)
-            if(!user == ""){
+            if(user != null){
                 if(bcrypt.compareSync(password,user.password)){
                     const token = jwt.sign({id : user.id}, "MySecret", {expiresIn : 60 * 60 * 24});
 

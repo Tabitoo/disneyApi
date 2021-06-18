@@ -173,7 +173,7 @@ module.exports = {
         })
         .catch(error => {
             console.log(error)
-            let errores = []
+            let errores = [];
             error.errors.forEach(error => {
                 if(error.type === "notNull Violation"){
                     errores.push(`El campo ${error.path} no puede ser nulo`)
