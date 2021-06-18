@@ -7,5 +7,6 @@ var router = express.Router();
 router.get('/', charactercontroller.getCharacters);
 router.get('/:id', charactercontroller.getCharacter);
 router.post('/create', charactercontroller.createCharacter);
+router.post('/edit/:id', charactercontroller.editCharacter);
 
 module.exports = router; 

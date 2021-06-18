@@ -1,7 +1,10 @@
+require('dotenv').config();
 const { response } = require("express");
 const db = require("../database/models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const sgMail = require("@sendgrid/mail");
+
 
 module.exports = {
     Register : (req,res) => {
@@ -45,23 +48,43 @@ module.exports = {
                 if(response != 0){
                     const token = jwt.sign({id : response.id}, "MySecret", {expiresIn : 60 * 60 * 24})
 
-                    if(response){
-                        return res.status(200).json({
-                            meta : {
-                                status : 200,
-                                msg : "Usuario creado correctamente",
-                                token : token
+                    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+                    const msg = {
+                        to : email,
+                        from : process.env.EMAIL,
+                        subject : 'DisneyApi',
+                        text : "Bienvenido a DisneyApi!",
+                        hmtl : "<strong>Bienvenido a DisneyApi!<strong>"
+                    }
+
+                    sgMail
+                        .send(msg)
+                        .then(() => {
+                            return res.status(200).json({
+                                meta : {
+                                    status : 200,
+                                    msg : "Usuario creado correctamente",
+                                    token : token
+                                }
+                            })
+                        })
+                        .catch(error => {
+
+                            console.error(error);
+
+                            if (error.response) {
+                            console.error(error.response.body)
                             }
                         })
-                    }
+                }else{
+                    res.status(400).json({
+                        meta : {
+                            status : 400,
+                            msg : "Email ya registrado"
+                        }
+                    })
                 }
-                res.status(400).json({
-                    meta : {
-                        status : 400,
-                        msg : "Email ya registrado"
-                    }
-                })
-
             })
             .catch(error => {
                 console.log(error)

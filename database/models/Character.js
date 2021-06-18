@@ -13,7 +13,9 @@ module.exports = (sequelize,dataTypes) => {
             type : dataTypes.STRING(45),
             allowNull : false,
             validate : {
-                notEmpty : true,
+                notEmpty : {
+                    msg : "El campo nombre no puede estar vacio"
+                },
 
             }
         },
@@ -21,23 +23,37 @@ module.exports = (sequelize,dataTypes) => {
             type : dataTypes.INTEGER,
             allowNull : false,
             validate : {
-                notEmpty : true,
-                isInt : true
+                notEmpty : {
+                    msg : "El campo Edad no puede estar vacio"
+                },
+                isInt : {
+                    msg : "Solo se aceptan digitos"
+                }
             }
         },
         weight : {
             type : dataTypes.FLOAT,
             allowNull : true,
             validate : {
-                notEmpty : true,
+                notEmpty : {
+                    msg : "El campo Peso no puede estar vacio"
+                },
+                isFloat : {
+                    msg : "El numero debe tener decimal"
+                }
             }
         },
         history : {
             type : dataTypes.STRING(1000),
             allowNull : false,
             validate : {
-                notEmpty : true,
-                max : 1000
+                notEmpty : {
+                    msg : "El campo historia no puede estar vacio"
+                },
+                max : {
+                    args : [1000],
+                    msg : "El campo historia no puede superar los mil caracteres"
+                }
             }
         },
         image : {
