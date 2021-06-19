@@ -1,5 +1,7 @@
 const db = require("../database/models");
 const {Op,Sequelize} = require('sequelize');
+const { response } = require("express");
+
 
 
 module.exports = {
@@ -37,14 +39,29 @@ module.exports = {
 
             const {name,age,movies} = req.query;
 
-            console.log(name)
-            console.log(age)
-            console.log(movies)
+            let format = (result) => {
+                
+                let characters = [];
 
-            async function pepe(){
+                result.forEach(character => {
+                    let body = {
+                        id : character.id,
+                        name : character.name,
+                        image : character.image
+                    }
+
+                    characters.push(body)
+                })
+
+                return characters
+            }
+
+       
+
+            async function search(){
                 
                 if(name != undefined){
-                    return await db.Characters.findAll({
+                    let result =  await db.Characters.findAll({
                         where : {
                             name : {
                                 [Op.like] :  `%${req.query.name}%`
@@ -58,9 +75,11 @@ module.exports = {
                             as : "peliculas"
                         }
                     })
+
+                    return format(result)
                 }
                 else if(age != undefined){
-                    return await db.Characters.findAll({
+                    let result = await db.Characters.findAll({
                         where : {
                             age : Number(age) 
                         },
@@ -72,9 +91,11 @@ module.exports = {
                             as : "peliculas"
                         }
                     })
+
+                    return format(result)
                 }
                 else if(movies != undefined){
-                    return await db.Characters.findAll({
+                    let result = await db.Characters.findAll({
                         include : {
                             model : db.Movies,
                             through : {
@@ -86,13 +107,18 @@ module.exports = {
                             }
                         }
                     })
+
+                    return format(result)
+
+                }else{
+                    return 0
                 }
             }
 
-            pepe()
+            search()
             .then(response => {
-                console.log(response.length) 
-                if( response.length != 0){
+                
+                if(response.length != 0 && response != 0){
                     return res.status(200).json({
                         meta : {
                             status : 200,
@@ -154,46 +180,73 @@ module.exports = {
 
     createCharacter : (req,res) => {
 
-       const {name, age, weight, history, image} = req.body;
+       const Body = req.body;
 
-       console.log(age);
-       console.log(typeof(age))
+       async function create(character){
+           let checkCharacter = await db.Characters.findOne({where : {name : character.name}})
 
-        db.Characters.create({
-            name,
-            age : Number(age),
-            weight,
-            history,
-            image
-        })
-        .then(result => {
-            return res.status(200).json({
-                status : {
-                    msg : "ok"
-                },
-
-                data : result
+           if(checkCharacter === null){
+               return await db.Characters.create({
+                    name : character.name,
+                    age : Number(character.age),
+                    weight : character.weight,
+                    history : character.history,
+                    image : character.image
             })
-        })
-        .catch(error => {
-            console.log(error)
-            let errores = [];
-            error.errors.forEach(error => {
-                if(error.type === "notNull Violation"){
-                    errores.push(`El campo ${error.path} no puede ser nulo`)
+           }else {
+               return 0
+           }
+
+       }
+
+       if(Body.name == undefined){
+           return res.status(400).json({
+               meta : {
+                   status : 400,
+                   msg : "El campo name no puede ser nulo"
+               }
+           })
+       }else{
+
+            create(Body)
+            .then(result => {
+                if(result != 0){
+                    return res.status(200).json({
+                        status : {
+                            msg : "ok"
+                        },
+    
+                        data : result
+                    })
                 }else{
-                    errores.push(error.message)
-                }
-                
-            });
-            
-            res.status(400).json({
-                meta : {
-                    status : 400,
-                    errors : errores
+                    res.status(400).json({
+                        meta : {
+                            status : 400,
+                            msg : "El nombre de ese personaje ya se encuentra almacenado en la base de datos"
+                        }
+                    })
                 }
             })
-        })
+            .catch(error => {
+                console.log(error)
+                let errores = [];
+                error.errors.forEach(error => {
+                    if(error.type === "notNull Violation"){
+                        errores.push(`El campo ${error.path} no puede ser nulo`)
+                    }else{
+                        errores.push(error.message)
+                    }
+                    
+                });
+                
+                res.status(400).json({
+                    meta : {
+                        status : 400,
+                        errors : errores
+                    }
+                })
+            })
+        }
     },
 
     editCharacter : (req,res) => {
@@ -241,8 +294,7 @@ module.exports = {
     },
 
     deleteCharacter : (req,res) => {
-
-        
+     
         db.Characters.destroy({
             where : {
                 id : req.params.id

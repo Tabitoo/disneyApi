@@ -13,7 +13,9 @@ module.exports = (sequelize,dataTypes) => {
             type : dataTypes.STRING(150),
             allowNull : false,
             validate : {
-                notEmpty : true,
+                notEmpty : {
+                    msg : "El campo title no puede estar vacio"
+                },
 
             }
         },
@@ -21,15 +23,21 @@ module.exports = (sequelize,dataTypes) => {
             type : dataTypes.DATE,
             allowNull : false,
             validate : {
-                isDate : true,
-                notEmpty : true
+                isDate : {
+                    msg : "Formato de fecha invalido"
+                },
+                notEmpty : {
+                    msg : "El campo date no puede estar vacio"
+                }
             }
         },
         ranking : {
             type : dataTypes.FLOAT,
             allowNull : true,
             validate : {
-                notEmpty : true
+                notEmpty : {
+                    msg : "El campo ranking no puede estar vacio"
+                }
             }
         },
         image : {
@@ -40,8 +48,12 @@ module.exports = (sequelize,dataTypes) => {
             type : dataTypes.INTEGER,
             allowNull : false,
             validate : {
-                notEmpty : true,
-                isInt : true
+                notEmpty : {
+                    msg : "El campo genreid no puede estar vacio"
+                },
+                isInt : {
+                    msg : "solo se aceptan digitos (field genreid)"
+                }
             } 
         }
 

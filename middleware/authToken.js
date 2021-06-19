@@ -15,7 +15,6 @@ module.exports = (req,res,next) => {
     }
     try {
         const verifyToken = jwt.verify(token,"MySecret");
-    
         db.Users.findByPk(verifyToken.id)
         .then(response => {
             if(!response){

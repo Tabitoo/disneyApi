@@ -7,6 +7,6 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', moviescontroller.getMovies);
 router.get('/:id', tokenCheck,moviescontroller.getMovie);
-router.post('/create', tokenCheck, moviescontroller.CreateMovie);
+router.post('/create', tokenCheck,moviescontroller.CreateMovie);
 
 module.exports = router;

@@ -39,14 +39,28 @@ module.exports = {
         } else{
             const {title,genre,order} = req.query;
 
-            console.log(title)
-            console.log(genre)
-            console.log(order)
+            let formatMovies = (result) => {
+                
+                let characters = [];
 
-            async function pepe(){
+                result.forEach(character => {
+                    let body = {
+                        id : character.id,
+                        title : character.title,
+                        image : character.image
+                    }
+
+                    characters.push(body)
+                })
+
+                return characters
+            }
+
+
+            async function SearchMovies(){
                 
                 if(title != undefined){
-                    return await db.Movies.findAll({
+                    let result =  await db.Movies.findAll({
                         where : {
                             title : {
                                 [Op.like] :  `%${req.query.title}%`
@@ -57,9 +71,11 @@ module.exports = {
                             as : "Generos"
                         }
                     })
+
+                    return formatMovies(result)
                 }
                 else if(genre != undefined){
-                    return await db.Movies.findAll({
+                    let result =  await db.Movies.findAll({
                         include : {
                             model : db.Genres,
                             where : {
@@ -68,18 +84,22 @@ module.exports = {
                             as : "Generos"
                         }
                     })
+
+                    return formatMovies(result)
                 }
                 else if(order != undefined){
-                    return await db.Movies.findAll({
+                    let result = await db.Movies.findAll({
                         order : [
                             ['date', order]
                         ]
                     })
+
+                    return formatMovies(result)
                 }
 
             }
 
-            pepe()
+            SearchMovies()
             .then(response => {
                     
                 if(response.length != 0){
@@ -101,7 +121,6 @@ module.exports = {
                 
             })
             .catch(error => console.log(error))  
-
 
         }       
     },
@@ -141,47 +160,76 @@ module.exports = {
     },
 
     CreateMovie : (req,res) => {
-        
-        const {title,date,ranking,image,genreid} = req.body;
-        
-        db.Movies.create({
-            title,
-            date,
-            ranking,
-            image,
-            genreid
 
-        })
-        .then(response => {
-            return res.status(200).json({
-                meta : {
-                    status : 200
-                },
-                data : response
-            })
-            
-        })
-        .catch(error => {
-            console.log(error)
-            let errores = []
-            error.errors.forEach(error => {
-                if(error.type === "notNull Violation"){
-                    errores.push(`El campo ${error.path} no puede ser nulo`)
-                }else{
-                    errores.push(error.message)
-                }
-                
-            });
-            
-            res.status(400).json({
+        const Body = req.body;
+
+        async function movieCreate(movie){
+            let checkMovie = await db.Movies.findOne({where : {title : movie.title}})
+ 
+            if(checkMovie === null){
+                return await db.Movies.create({
+                     title : movie.title,
+                     date : movie.date,
+                     ranking : movie.ranking,
+                     image : movie.image,
+                     genreid : movie.genreid
+             })
+            }else {
+                return 0
+            }
+ 
+        }
+ 
+        if(Body.title == undefined){
+            return res.status(400).json({
                 meta : {
                     status : 400,
-                    errors : errores
+                    msg : "El campo title no puede ser nulo"
                 }
             })
-        })
+        }else{
+ 
+             movieCreate(Body)
+             .then(result => {
+                 if(result != 0){
+                     return res.status(200).json({
+                         status : {
+                             msg : "ok"
+                         },
+     
+                         data : result
+                     })
+                 }else{
+                     res.status(400).json({
+                         meta : {
+                             status : 400,
+                             msg : "El nombre de ese personaje ya se encuentra almacenado en la base de datos"
+                         }
+                     })
+                 }
+             })
+             .catch(error => {
+                 console.log(error)
+                 let errores = [];
+                 error.errors.forEach(error => {
+                     if(error.type === "notNull Violation"){
+                         errores.push(`El campo ${error.path} no puede ser nulo`)
+                     }else{
+                         errores.push(error.message)
+                     }
+                     
+                 });
+                 
+                 res.status(400).json({
+                     meta : {
+                         status : 400,
+                         errors : errores
+                     }
+                 })
+             })
+         }
+       
     },
-
     editMovie : (req,res) => {
 
         const {title,date,ranking,image,genreid} = req.body;
