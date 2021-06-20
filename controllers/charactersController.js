@@ -1,6 +1,7 @@
 const db = require("../database/models");
 const {Op,Sequelize} = require('sequelize');
 const { response } = require("express");
+const functions = require("./functions");
 
 
 
@@ -37,85 +38,10 @@ module.exports = {
 
         } else{
 
-            const {name,age,movies} = req.query;
+            const body = req.query;
 
-            let format = (result) => {
-                
-                let characters = [];
 
-                result.forEach(character => {
-                    let body = {
-                        id : character.id,
-                        name : character.name,
-                        image : character.image
-                    }
-
-                    characters.push(body)
-                })
-
-                return characters
-            }
-
-       
-
-            async function search(){
-                
-                if(name != undefined){
-                    let result =  await db.Characters.findAll({
-                        where : {
-                            name : {
-                                [Op.like] :  `%${req.query.name}%`
-                            }, 
-                        },
-                        include : {
-                            model : db.Movies,
-                            through : {
-                                attributes : []
-                            },
-                            as : "peliculas"
-                        }
-                    })
-
-                    return format(result)
-                }
-                else if(age != undefined){
-                    let result = await db.Characters.findAll({
-                        where : {
-                            age : Number(age) 
-                        },
-                        include : {
-                            model : db.Movies,
-                            through : {
-                                attributes : []
-                            },
-                            as : "peliculas"
-                        }
-                    })
-
-                    return format(result)
-                }
-                else if(movies != undefined){
-                    let result = await db.Characters.findAll({
-                        include : {
-                            model : db.Movies,
-                            through : {
-                                attributes : []
-                            },
-                            as : "peliculas",
-                            where : {
-                                id : movies
-                            }
-                        }
-                    })
-
-                    return format(result)
-
-                }else{
-                    return 0
-                }
-            }
-
-            search()
+            functions.searchCharacter(body)
             .then(response => {
                 
                 if(response.length != 0 && response != 0){
@@ -182,23 +108,6 @@ module.exports = {
 
        const Body = req.body;
 
-       async function create(character){
-           let checkCharacter = await db.Characters.findOne({where : {name : character.name}})
-
-           if(checkCharacter === null){
-               return await db.Characters.create({
-                    name : character.name,
-                    age : Number(character.age),
-                    weight : character.weight,
-                    history : character.history,
-                    image : character.image
-            })
-           }else {
-               return 0
-           }
-
-       }
-
        if(Body.name == undefined){
            return res.status(400).json({
                meta : {
@@ -208,7 +117,7 @@ module.exports = {
            })
        }else{
 
-            create(Body)
+            functions.createCharacter(Body)
             .then(result => {
                 if(result != 0){
                     return res.status(200).json({
@@ -266,13 +175,26 @@ module.exports = {
         })
         .then(result => {
             console.log(result)
-            return res.status(200).json({
-                meta : {
-                    status : 200,
-                    msg : "Personaje actualizado"
-                },
-                data : result
-            })
+            if(result[0] == 1){
+                return res.status(200).json({
+                    meta : {
+                        status : 200,
+                        msg : "Personaje actualizado"
+                    },
+                    data : result
+                })
+            }else{
+                res.status(200).json({
+                    meta : {
+                        status : 500,
+                        msg : "Error al actualizar"
+                    },
+                    data : result
+                })
+
+            }
+            
+            
         })
         .catch(error => {
             console.log(error)

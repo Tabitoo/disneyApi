@@ -1,7 +1,7 @@
 const db = require("../database/models");
 const {Op,Sequelize} = require('sequelize');
 const { sequelize } = require('../database/models');
-const { json } = require("express");
+const functions = require("./functions");
 
 
 
@@ -37,69 +37,10 @@ module.exports = {
             .catch(error => console.log(error))
 
         } else{
-            const {title,genre,order} = req.query;
-
-            let formatMovies = (result) => {
-                
-                let characters = [];
-
-                result.forEach(character => {
-                    let body = {
-                        id : character.id,
-                        title : character.title,
-                        image : character.image
-                    }
-
-                    characters.push(body)
-                })
-
-                return characters
-            }
+            const body = req.query;
 
 
-            async function SearchMovies(){
-                
-                if(title != undefined){
-                    let result =  await db.Movies.findAll({
-                        where : {
-                            title : {
-                                [Op.like] :  `%${req.query.title}%`
-                            }, 
-                        },
-                        include : {
-                            model : db.Genres,
-                            as : "Generos"
-                        }
-                    })
-
-                    return formatMovies(result)
-                }
-                else if(genre != undefined){
-                    let result =  await db.Movies.findAll({
-                        include : {
-                            model : db.Genres,
-                            where : {
-                                id : genre
-                            },
-                            as : "Generos"
-                        }
-                    })
-
-                    return formatMovies(result)
-                }
-                else if(order != undefined){
-                    let result = await db.Movies.findAll({
-                        order : [
-                            ['date', order]
-                        ]
-                    })
-
-                    return formatMovies(result)
-                }
-
-            }
-
-            SearchMovies()
+            functions.SearchMovies(body)
             .then(response => {
                     
                 if(response.length != 0){
@@ -163,23 +104,6 @@ module.exports = {
 
         const Body = req.body;
 
-        async function movieCreate(movie){
-            let checkMovie = await db.Movies.findOne({where : {title : movie.title}})
- 
-            if(checkMovie === null){
-                return await db.Movies.create({
-                     title : movie.title,
-                     date : movie.date,
-                     ranking : movie.ranking,
-                     image : movie.image,
-                     genreid : movie.genreid
-             })
-            }else {
-                return 0
-            }
- 
-        }
- 
         if(Body.title == undefined){
             return res.status(400).json({
                 meta : {
@@ -189,45 +113,45 @@ module.exports = {
             })
         }else{
  
-             movieCreate(Body)
-             .then(result => {
-                 if(result != 0){
-                     return res.status(200).json({
-                         status : {
-                             msg : "ok"
-                         },
+            functions.movieCreate(Body)
+            .then(result => {
+                if(result != 0){
+                    return res.status(200).json({
+                        status : {
+                            msg : "ok"
+                        },
      
-                         data : result
-                     })
-                 }else{
-                     res.status(400).json({
-                         meta : {
-                             status : 400,
-                             msg : "El nombre de ese personaje ya se encuentra almacenado en la base de datos"
-                         }
-                     })
-                 }
-             })
-             .catch(error => {
-                 console.log(error)
-                 let errores = [];
-                 error.errors.forEach(error => {
-                     if(error.type === "notNull Violation"){
-                         errores.push(`El campo ${error.path} no puede ser nulo`)
-                     }else{
-                         errores.push(error.message)
-                     }
+                        data : result
+                    })
+                }else{
+                    res.status(400).json({
+                        meta : {
+                            status : 400,
+                            msg : "El nombre de ese personaje ya se encuentra almacenado en la base de datos"
+                        }
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                let errores = [];
+                error.errors.forEach(error => {
+                    if(error.type === "notNull Violation"){
+                        errores.push(`El campo ${error.path} no puede ser nulo`)
+                    }else{
+                        errores.push(error.message)
+                    }
                      
-                 });
+                });
                  
-                 res.status(400).json({
-                     meta : {
-                         status : 400,
-                         errors : errores
-                     }
-                 })
-             })
-         }
+                res.status(400).json({
+                    meta : {
+                        status : 400,
+                        errors : errores
+                    }
+                })
+            })
+        }
        
     },
     editMovie : (req,res) => {
@@ -246,13 +170,24 @@ module.exports = {
             }
         })
         .then(result => {
-            return res.status(200).json({
+            if(result[0] == 1){
+                return res.status(200).json({
+                    meta : {
+                        status : 200,
+                        msg : "pelicula actualizada"
+                    },
+                    data : result
+                })
+            }
+            res.status(500).json({
                 meta : {
-                    status : 200,
-                    msg : "pelicula actualizada"
+                    status : 500,
+                    msg : "error al actualizar"
                 },
                 data : result
+                
             })
+            
         })
         .catch(error => {
             console.log(error)

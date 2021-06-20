@@ -107,7 +107,6 @@ module.exports = {
         })
 
     },
-    
     deleteGenre : (req,res) => {
 
         db.Genres.destroy({
