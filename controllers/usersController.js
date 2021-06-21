@@ -11,6 +11,8 @@ module.exports = {
 
         const {email,password} = req.body;
 
+        console.log(req.body)
+
         async function createUser(correo,pass){
         
             let user = await db.Users.findOne({where : {email : correo}});

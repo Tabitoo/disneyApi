@@ -118,7 +118,7 @@ module.exports = {
                 if(result != 0){
                     return res.status(200).json({
                         status : {
-                            msg : "ok"
+                            msg : "Pelicula creada correctamente"
                         },
      
                         data : result

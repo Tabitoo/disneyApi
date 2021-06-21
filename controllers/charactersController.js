@@ -121,8 +121,9 @@ module.exports = {
             .then(result => {
                 if(result != 0){
                     return res.status(200).json({
-                        status : {
-                            msg : "ok"
+                        meta : {
+                            status : 200,
+                            msg : "Personaje creado correctamente"
                         },
     
                         data : result
@@ -189,7 +190,7 @@ module.exports = {
                         status : 500,
                         msg : "Error al actualizar"
                     },
-                    data : result
+                    
                 })
 
             }

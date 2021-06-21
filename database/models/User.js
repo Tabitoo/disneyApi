@@ -17,7 +17,7 @@ module.exports = (sequelize,dataTypes) => {
                 notEmpty : {
                     msg : "El campo Email no puede estar vacio"
                 },
-                isEmail : {
+                isEmail : { 
                     msg : "Formato invalido, debe ser un email"
                 }
             }

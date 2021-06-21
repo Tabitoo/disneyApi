@@ -32,12 +32,21 @@ module.exports = (req,res,next) => {
         
     } catch (error) {
         console.log(error)
-        return res.status(401).json({
+        if(!error.expiredAt){
+            return res.status(401).json({
+                meta : {
+                    status : 401,
+                    msg : "Token invalido"
+                }
+            })
+        }
+        res.status(400).json({
             meta : {
                 status : 401,
-                msg : "Token invalido"
+                msg : "Token expirado"
             }
         })
+        
     }
     
 }

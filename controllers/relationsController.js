@@ -55,6 +55,7 @@ module.exports = {
         .catch(error => console.log(error))
 
     },
+    /*
     getRelations : (req,res) => {
         db.Character_movie.findAll({
             attributes : ["id", "characterid", "movieid"]
@@ -114,6 +115,6 @@ module.exports = {
             })
             .catch(error => console.log(error))
         })
-    }
+    }*/
 
 }
