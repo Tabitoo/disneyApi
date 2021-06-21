@@ -172,7 +172,7 @@ Method : GET
 Se puede acceder al detalle de un personaje de la siguiente forma
 
 ```
-http://localhost:3000/api/characters/1
+http://localhost:3000/api/characters/idMovie
 
 ```
 
@@ -294,7 +294,7 @@ Method : DELETE
 
 Puede eliminar un personaje de la siguiente manera
 ```
-http://localhost:3000/api/characters/delete/
+http://localhost:3000/api/characters/delete/idMovie
 ```
 
 #### Response
@@ -355,6 +355,182 @@ http://localhost:3000/api/movies
     ]
 }
 ```
+
+Tambien es posible pasar parametros de busqueda en el url, solo se acepta uno a la vez. Los parametros disponibles son los siguientes:
+
+- title -> Nombre de la pelicula
+- genre -> id del genero de la pelicula
+- order -> Se aceptan los parametros ASC y DESC para ver el orden de las peliculas
+
+```
+http://localhost:3000/api/movies?title=mulan
+
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "Ok"
+    },
+    "data": [
+        {
+            "id": 2,
+            "title": "Mulan",
+            "image": "https://i.imgur.com/HviPYwS.jpeg"
+        },
+        {
+            "id": 3,
+            "title": "Mulan 2",
+            "image": "https://i.imgur.com/aGgBsFy.png"
+        }
+    ]
+}
+
+
+```
+
+### Detalle de una Pelicula
+Method : GET
+
+Se puede acceder al detalle de una pelicula de la siguiente forma
+
+```
+http://localhost:3000/api/movies/idMovie
+
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "ok"
+    },
+    "data": {
+        "id": 1,
+        "title": "The Lion King",
+        "date": "1994-07-07",
+        "ranking": 10,
+        "image": "https://i.imgur.com/cLQMqbc.jpeg",
+        "genreid": 2,
+        "personajes": [
+            {
+                "id": 1,
+                "name": "Mufasa",
+                "age": 44,
+                "weight": 80,
+                "history": "El Rey Mufasa es un personaje principal de la película The Lion King. Es el padre de Simba, el esposo de Sarabi, el hermano mayor de Scar y el Rey de las Tierras del Reino al comienzo de la película.",
+                "image": "https://i.imgur.com/QFC6AW4.png"
+            }
+        ]
+    }
+}
+```
+
+
+### Crear una pelicula
+Method : POST
+
+```
+http://localhost:3000/api/characters/create
+
+```
+
+#### Body
+
+```
+{
+  title : value -> string,
+  date : value -> date,
+  ranking : value -> float,
+  image : value -> string,
+  genreid : value -> int,
+  
+}
+
+```
+
+#### Response
+
+```
+{
+  meta : {
+    status : 200,
+    msg : "Pelicula creado correctamente"
+  },
+  data : detalles de la pelicula creada
+}
+
+```
+
+### Editar una Pelicula
+Method : PUT  
+
+```
+http://localhost:3000/api/movies/edit/idMovie
+
+```
+
+#### Body
+
+```
+{
+  title : value -> string,
+  date : value -> date,
+  ranking : value -> float,
+  image : value -> string,
+  genreid : value -> int,
+  
+}
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg : "Pelicula actualizada"
+  },
+  data : detalles de la pelicula actualizada
+}
+
+```
+
+No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algun error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
+
+```
+{
+  meta : {
+    status : 500,
+    msg : "Error al actualizar"
+  },
+  
+}
+
+```
+### Eliminar una Pelicula
+Method : DELETE
+
+Puede eliminar una pelicula de la siguiente manera
+```
+http://localhost:3000/api/movies/delete/idMovie
+```
+
+#### Response
+
+```
+{
+  status : 200,
+  msg : "Elemento borrado correctamente"
+}
+
+```
+
 
 
 
