@@ -20,3 +20,126 @@ EMAIL = "your_email"
 Para el envio de mail a la hora de que un usuario se registre, se utiliza como servicio **Sendgrid** , puede conseguir su API KEY siguiendo este [tutorial](https://docs.sendgrid.com/for-developers/sending-email/api-getting-started)
 
 ## Endpoints
+
+### Register 
+
+Method : POST
+
+```
+http://localhost:3000/api/auth/register
+```
+
+#### Body
+
+```
+{
+  email : value,
+  password : value
+  
+}
+
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "Usuario creado correctamente",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImlhdCI6MTYyNDMwMDMwMCwiZXhwIjoxNjI0Mzg2NzAwfQ.WYJdZqlnEKIG5bWokabB1fkO9rzJhXlLcL367-kcgBo"
+    }
+}
+
+```
+
+### Login
+
+Method : POST
+
+```
+http://localhost:3000/api/auth/login
+```
+
+
+```
+{
+  email : value,
+  password : value
+  
+}
+
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "Sesion iniciada",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImlhdCI6MTYyNDMwMDMwMCwiZXhwIjoxNjI0Mzg2NzAwfQ.WYJdZqlnEKIG5bWokabB1fkO9rzJhXlLcL367-kcgBo"
+    }
+}
+
+```
+
+### Headers
+
+Para los endpoints siguientes, es necesario pasar el token en el header, de lo contrario no podra acceder a ellos
+
+
+### Characters
+
+Method : GET
+
+```
+http://localhost:3000/api/Characters
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "ok"
+    },
+    "data": [
+        {
+            "id": 1,
+            "name": "Mufasa",
+            "image": "https://i.imgur.com/QFC6AW4.png"
+        },
+        {
+            "id": 2,
+            "name": "Mulan",
+            "image": "https://i.imgur.com/80bLmgM.png"
+        },
+        {
+            "id": 4,
+            "name": "Hercules",
+            "image": "https://i.imgur.com/r7HjyBQ.jpeg"
+        },
+        {
+            "id": 5,
+            "name": "Megara",
+            "image": "https://i.imgur.com/ERGwQtm.png"
+        }
+    ]
+}
+
+```
+
+Tambien es posible pasar parametros de busqueda en el url, solo se acepta uno a la vez. Los parametros disponibles son los siguientes:
+
+- name -> Nombre del personaje
+- age -> Edad del personaje
+- movies -> Pelicula en la que aparece el personaje
+
+
+
+
+
+
+
