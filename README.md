@@ -241,6 +241,124 @@ http://localhost:3000/api/characters/create
 
 ```
 
+### Editar un personaje
+Method : PUT  
+
+```
+http://localhost:3000/api/characters/edit/idCharacter
+
+```
+
+#### Body
+
+```
+{
+  name : value -> string,
+  age : value -> int,
+  weight : value -> float,
+  history : value -> string,
+  image : value -> string
+  
+}
+
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg : "Personaje creado correctamente"
+  },
+  data : detalles del personaje editado
+}
+
+```
+
+No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algun error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
+
+```
+{
+  meta : {
+    status : 500,
+    msg : "Error al actualizar"
+  },
+  
+}
+
+```
+
+### Eliminar un personaje
+Method : DELETE
+
+Puede eliminar un personaje de la siguiente manera
+```
+http://localhost:3000/api/characters/delete/
+```
+
+#### Response
+
+```
+{
+  status : 200,
+  msg : "Elemento borrado correctamente"
+}
+
+```
+
+## Endpoints Movies
+
+### Movies
+
+Method : GET
+
+```
+http://localhost:3000/api/movies
+
+```
+
+#### Response
+
+```
+
+{
+    "meta": {
+        "status": 200,
+        "msg": "ok"
+    },
+    "data": [
+        {
+            "id": 1,
+            "title": "The Lion King",
+            "image": "https://i.imgur.com/cLQMqbc.jpeg",
+            "date": "1994-07-07"
+        },
+        {
+            "id": 2,
+            "title": "Mulan",
+            "image": "https://i.imgur.com/HviPYwS.jpeg",
+            "date": "1998-05-07"
+        },
+        {
+            "id": 3,
+            "title": "Mulan 2",
+            "image": "https://i.imgur.com/aGgBsFy.png",
+            "date": "2004-01-02"
+        },
+        {
+            "id": 4,
+            "title": "Hercules",
+            "image": "https://i.imgur.com/AZZAjNk.jpeg",
+            "date": "1997-06-27"
+        }
+    ]
+}
+```
+
+
+
+
 
 
 
