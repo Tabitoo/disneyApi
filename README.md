@@ -89,6 +89,8 @@ http://localhost:3000/api/auth/login
 Para los endpoints siguientes, es necesario pasar el token en el header, de lo contrario no podra acceder a ellos
 
 
+## Endpoints Characters
+
 ### Characters
 
 Method : GET
@@ -136,6 +138,111 @@ Tambien es posible pasar parametros de busqueda en el url, solo se acepta uno a 
 - name -> Nombre del personaje
 - age -> Edad del personaje
 - movies -> Pelicula en la que aparece el personaje
+
+
+
+```
+http://localhost:3000/api/characters?name=mulan
+
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "Ok"
+    },
+    "data": [
+        {
+            "id": 2,
+            "name": "Mulan",
+            "image": "https://i.imgur.com/80bLmgM.png"
+        }
+    ]
+}
+
+
+```
+
+### Detalle de un personaje
+Method : GET
+
+Se puede acceder al detalle de un personaje de la siguiente forma
+
+```
+http://localhost:3000/api/characters/1
+
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "ok"
+    },
+    "data": {
+        "id": 1,
+        "name": "Mufasa",
+        "age": 44,
+        "weight": 80,
+        "history": "El Rey Mufasa es un personaje principal de la película The Lion King. Es el padre de Simba, el esposo de Sarabi, el hermano mayor de Scar y el Rey de las Tierras del Reino al comienzo de la película.",
+        "image": "https://i.imgur.com/QFC6AW4.png",
+        "peliculas": [
+            {
+                "id": 1,
+                "title": "The Lion King",
+                "date": "1994-07-07",
+                "ranking": 10,
+                "image": "https://i.imgur.com/cLQMqbc.jpeg",
+                "genreid": 2
+            }
+        ]
+    }
+}
+
+```
+
+### Crear un personaje
+Method : POST
+
+```
+http://localhost:3000/api/characters/create
+
+```
+
+#### Body
+
+```
+{
+  name : value -> string,
+  age : value -> int,
+  weight : value -> float,
+  history : value -> string,
+  image : value -> string
+  
+}
+
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg : "Personaje creado correctamente"
+  },
+  data : detalles del personaje creado
+}
+
+```
+
+
+
 
 
 
