@@ -531,12 +531,126 @@ http://localhost:3000/api/movies/delete/idMovie
 
 ```
 
+## Endpoints Generos
+
+### Genres
+
+Method : GET
+
+```
+http://localhost:3000/api/genres
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "ok"
+    },
+    "data": [
+        {
+            "id": 1,
+            "name": "Adventure",
+            "image": "https://i.imgur.com/vBfpplz.png"
+        },
+        {
+            "id": 2,
+            "name": "Drama",
+            "image": "https://i.imgur.com/PkSPUlC.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Musical",
+            "image": "https://i.imgur.com/YqlKvlo.jpg"
+        }
+    ]
+}
+```
 
 
+### Crear un genero
+Method : POST
 
+```
+http://localhost:3000/api/genres/create
 
+```
 
+#### Body
 
+```
+{
+  name : value -> string,
+  image : value -> string
+  
+}
+
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg : genero creado correctamente
+  },
+  data : {
+    nombre : value,
+    image : value
+  }
+}
+
+```
+
+### Editar un Genero
+Method : PUT  
+
+```
+http://localhost:3000/api/genres/edit/idGenre
+
+```
+
+#### Body
+
+```
+{
+  title : value -> string,
+  image : value -> string,
+}
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg : genero actualizado
+  }
+}
+
+```
+
+### Eliminar un Genero
+Method : DELETE
+
+Puede eliminar un genero de la siguiente manera
+```
+http://localhost:3000/api/genres/delete/idGenre
+```
+
+#### Response
+
+```
+{
+  status : 200,
+  msg : "Elemento borrado correctamente"
+}
+
+```
 
 
 
