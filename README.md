@@ -671,10 +671,10 @@ http://localhost:3000/api/genres/delete/idGenre
 
 ## Endpoints Relations
 
-Como un personaje puede aparecer en varias peliculas, para relacionarlos se utiliza el modelo de relacion muchos a muchos. Con el fin de logras dichas relaciones se utiliza el endpoint relations para generarlas, tendrá que realizar esta accion cada vez que cree una pelicula y un personaje que estén relacionados.
+Como un personaje puede aparecer en varias peliculas, para relacionarlos se utiliza el modelo de relación muchos a muchos. Con el fin de logras dichas relaciones se utiliza el endpoint relations para generarlas, tendrá que realizar esta accion cada vez que cree una pelicula y un personaje que estén relacionados.
 
 
-### Crear una relacion
+### Crear una relación
 Method : POST
 
 ```
@@ -740,7 +740,7 @@ http://localhost:3000/api/relations
 
 ```
 
-### Editar una relacion
+### Editar una relación
 Method : PUT  
 
 ```
@@ -769,7 +769,7 @@ http://localhost:3000/api/relations/edit/idRelation
 
 ```
 
-Al contrario que los casos anteriores, al actualizar una relacion es necesario todos los campos del body, de lo contrario recibirá la siguiente respuesta: 
+Al contrario que los casos anteriores, al actualizar una relación es necesario todos los campos del body, de lo contrario recibirá la siguiente respuesta: 
 ```
 {
     "meta": {
@@ -782,7 +782,7 @@ Al contrario que los casos anteriores, al actualizar una relacion es necesario t
 ### Eliminar una Relacion
 Method : DELETE
 
-Puede eliminar una relacion de la siguiente manera
+Puede eliminar una relación de la siguiente manera
 ```
 http://localhost:3000/api/relations/delete/idRelation
 ```
