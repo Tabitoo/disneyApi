@@ -1,6 +1,6 @@
 # disneyApi
 
-API creada para el challenge de Alkemy Labs donde podra pedir información sobre personajes y peliculas de disney basada en el modelo REST API.
+API creada para el challenge de Alkemy Labs donde podra pedir información sobre personajes y películas de disney basada en el modelo REST API.
 
 ## Configuración inicial
 
@@ -17,7 +17,7 @@ EMAIL = "your_email"
 
 ```
 
-Para el envio de mail a la hora de que un usuario se registre, se utiliza como servicio **Sendgrid** , puede conseguir su API KEY siguiendo este [tutorial](https://docs.sendgrid.com/for-developers/sending-email/api-getting-started)
+Para enviar un mail a la hora de que un usuario se registre, se utiliza como servicio **Sendgrid** , puede conseguir su API KEY siguiendo este [tutorial](https://docs.sendgrid.com/for-developers/sending-email/api-getting-started)
 
 ## Endpoints
 
@@ -133,7 +133,7 @@ http://localhost:3000/api/Characters
 
 ```
 
-Tambien es posible pasar parametros de busqueda en el url, solo se acepta uno a la vez. Los parametros disponibles son los siguientes:
+También es posible pasar parametros de busqueda en el url, solo se acepta uno a la vez. Los parámetros disponibles son los siguientes:
 
 - name -> Nombre del personaje
 - age -> Edad del personaje
@@ -276,7 +276,7 @@ http://localhost:3000/api/characters/edit/idCharacter
 
 ```
 
-No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algun error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
+No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algún error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
 
 ```
 {
@@ -356,7 +356,7 @@ http://localhost:3000/api/movies
 }
 ```
 
-Tambien es posible pasar parametros de busqueda en el url, solo se acepta uno a la vez. Los parametros disponibles son los siguientes:
+Tambien es posible pasar parámetros de busqueda en el url, solo se acepta uno a la vez. Los párametros disponibles son los siguientes:
 
 - title -> Nombre de la pelicula
 - genre -> id del genero de la pelicula
@@ -501,7 +501,7 @@ http://localhost:3000/api/movies/edit/idMovie
 
 ```
 
-No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algun error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
+No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algún error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
 
 ```
 {
