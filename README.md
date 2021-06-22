@@ -198,7 +198,12 @@ http://localhost:3000/api/characters/idMovie
                 "date": "1994-07-07",
                 "ranking": 10,
                 "image": "https://i.imgur.com/cLQMqbc.jpeg",
-                "genreid": 2
+                "genreid": 2,
+                "Character_movie": {
+                    "id": 1,
+                    "characterid": 1,
+                    "movieid": 1
+                }
             }
         ]
     }
