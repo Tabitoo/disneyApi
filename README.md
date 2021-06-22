@@ -634,6 +634,18 @@ http://localhost:3000/api/genres/edit/idGenre
 
 ```
 
+No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algún error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
+
+```
+{
+  meta : {
+    status : 500,
+    msg : "Error al actualizar"
+  },
+  
+}
+```
+
 ### Eliminar un Genero
 Method : DELETE
 
@@ -721,9 +733,64 @@ http://localhost:3000/api/relations
     ]
 }
 
+```
+
+### Editar una relacion
+Method : PUT  
+
+```
+http://localhost:3000/api/relations/edit/idRelation
 
 ```
 
+#### Body
+
+```
+{
+    character : character name -> string,
+    movie : movie title -> string
+}
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg :  relacion actualizada
+  }
+}
+
+```
+
+Al contrario que los casos anteriores, al actualizar una relacion es necesario todos los campos del body, de lo contrario recibirá la siguiente respuesta: 
+```
+{
+    "meta": {
+        "status": 500,
+        "msg": "Los campos character y movie no pueden ser nulos"
+    }
+}
+```
+
+### Eliminar una Relacion
+Method : DELETE
+
+Puede eliminar una relacion de la siguiente manera
+```
+http://localhost:3000/api/relations/delete/idRelation
+```
+
+#### Response
+
+```
+{
+  status : 200,
+  msg : "Elemento borrado correctamente"
+}
+
+```
 
 
 
