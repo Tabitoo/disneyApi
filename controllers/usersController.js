@@ -50,6 +50,7 @@ module.exports = {
                 if(response != 0){
                     const token = jwt.sign({id : response.id}, "MySecret", {expiresIn : 60 * 60 * 24})
 
+                    /* Envio de mail a traves de Sengrid*/ 
                     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
                     const msg = {

@@ -75,7 +75,7 @@ module.exports = {
                   model: db.Movies,
                   as: "peliculas",
                   through: {
-                    attributes: [],
+                    attributes: ["id", "characterid", "movieid"],
                   }
                 }
               ]

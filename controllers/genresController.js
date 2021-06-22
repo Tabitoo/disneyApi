@@ -1,6 +1,8 @@
 const db = require("../database/models");
 const {Op,Sequelize} = require('sequelize');
 const { sequelize } = require('../database/models');
+const functions = require("./functions");
+
 
 module.exports = {
     getGenres : (req,res) => {
@@ -35,39 +37,60 @@ module.exports = {
 
     createtGenre : (req,res) => {
 
-        const {name, image} = req.body
+        const Body = req.body;
 
-        db.Genres.create({
-            name : name,
-            image : image
-        })
-        .then(response => {
-            return res.status(200).json({
-                data : {
-                    nombre : response.name,
-                    imagen : response.image
-                }
-            })
-        })
-        .catch(error => {
-            console.log(error)
-            let errores = [];
-            error.errors.forEach(error => {
-                if(error.type === "notNull Violation"){
-                    errores.push(`El campo ${error.path} no puede ser nulo`)
-                }else{
-                    errores.push(error.message)
-                }
-            });
-
-            res.status(400).json({
+        if(Body.name == undefined){
+            return res.status(400).json({
                 meta : {
                     status : 400,
-                    errors : errores
+                    msg : "El campo name no puede ser nulo"
                 }
             })
-        })
+        }else{
 
+            functions.genreCreate(Body)
+            .then(response => {
+                if(response != 0){
+                    return res.status(200).json({
+                        meta : {
+                            status : 200,
+                            msg : "Genero creado correctamente"
+                        },
+                        data : {
+                            nombre : response.name,
+                            imagen : response.image
+                        }
+                    })
+                }else{
+                    res.status(400).json({
+                        meta : {
+                            status : 400,
+                            msg : "El nombre de ese genero ya se encuentra almacenado en la base de datos"
+                        }
+                    })
+                }
+                
+            })
+            .catch(error => {
+                console.log(error)
+                let errores = [];
+                error.errors.forEach(error => {
+                    if(error.type === "notNull Violation"){
+                        errores.push(`El campo ${error.path} no puede ser nulo`)
+                    }else{
+                        errores.push(error.message)
+                    }
+                });
+    
+                res.status(400).json({
+                    meta : {
+                        status : 400,
+                        errors : errores
+                    }
+                })
+            })
+
+        }
     },
 
     editGenre : (req,res) => {

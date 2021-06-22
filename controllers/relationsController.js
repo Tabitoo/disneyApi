@@ -46,6 +46,10 @@ module.exports = {
             })
             .then(response => {
                 return res.status(200).json({
+                    meta : {
+                        status : 200,
+                        msg : "Relacion creada correctamente"
+                    },
                     data : response
                 })
             })
@@ -55,7 +59,7 @@ module.exports = {
         .catch(error => console.log(error))
 
     },
-    /*
+    
     getRelations : (req,res) => {
         db.Character_movie.findAll({
             attributes : ["id", "characterid", "movieid"]
@@ -76,6 +80,15 @@ module.exports = {
 
         
         const {character, movie} = req.body;
+
+        if(character == undefined || movie == undefined){
+            return res.status(500).json({
+                meta : {
+                    status : 500,
+                    msg : "Los campos character y movie no pueden ser nulos"
+                }
+            })
+        }
 
         let movieR = db.Movies.findOne({where : { title : movie}});
         let characterR =  db.Characters.findOne({where : { name : character}});
@@ -110,11 +123,38 @@ module.exports = {
             })
             .then(response => {
                 return res.status(200).json({
-                    data : response
+                    meta : {
+                        status : 200,
+                        msg : "Relacion editada correctamente"
+                    }
                 })
             })
             .catch(error => console.log(error))
         })
-    }*/
+    },
+    deleteRelation : (req,res) => {
+
+        db.Character_movie.destroy({
+            where : {
+                id : req.params.id
+            }
+        })
+        .then(result => {
+            console.log(result)
+            if(result != 0){
+                return res.status(200).json({
+                    status : 200,
+                    msg : "Elemento borrado correctamente"
+                })
+            }
+            res.status(404).json({
+                status : 404,
+                msg : "Relacion no encontrada"
+            })
+            
+        })
+        .catch(error => console.log(error))
+        
+    }
 
 }

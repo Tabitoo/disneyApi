@@ -1,7 +1,10 @@
+require('dotenv').config();
+
+
 module.exports = {
   "development": {
-    "username": "root",
-    "password": "magaysami1",
+    "username": process.env.DATABASE_USERNAME,
+    "password": process.env.DATABASE_PASSWORD,
     "database": "disneymovies",
     "host": "127.0.0.1",
     "dialect": "mysql"

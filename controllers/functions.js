@@ -173,4 +173,23 @@ async function movieCreate(movie){
 
 }
 
-module.exports = {formatCharacter, searchCharacter, createCharacter, formatMovies, SearchMovies, movieCreate}
+/* FUNCTIONS FOR GENRESCONTROLLER */
+
+async function genreCreate(genre){
+    let checkMovie = await db.Genres.findOne({where : {name : genre.name}})
+    console.log(checkMovie)
+    if(checkMovie === null){
+        return await db.Genres.create({
+            name : genre.name,
+            image : genre.image,
+             
+     })
+    }else {
+        return 0
+    }
+
+}
+
+
+
+module.exports = {formatCharacter, searchCharacter, createCharacter, formatMovies, SearchMovies, movieCreate,genreCreate}
