@@ -1,6 +1,6 @@
 # disneyApi
 
-API creada para el challenge de Alkemy Labs donde podra pedir información sobre personajes y peliculas de disney basada en el modelo REST API.
+API creada para el challenge de Alkemy Labs donde podra pedir información sobre personajes y películas de disney basada en el modelo REST API.
 
 ## Configuración inicial
 
@@ -17,7 +17,15 @@ EMAIL = "your_email"
 
 ```
 
-Para el envio de mail a la hora de que un usuario se registre, se utiliza como servicio **Sendgrid** , puede conseguir su API KEY siguiendo este [tutorial](https://docs.sendgrid.com/for-developers/sending-email/api-getting-started)
+Para enviar un mail a la hora de que un usuario se registre, se utiliza como servicio **Sendgrid** , puede conseguir su API KEY siguiendo este [tutorial](https://docs.sendgrid.com/for-developers/sending-email/api-getting-started)
+
+## Secciones
+
+ - [Endpoints Characters](https://github.com/Tabitoo/disneyApi/blob/main/README.md#endpoints-characters)
+ - [Endpoints Movies](https://github.com/Tabitoo/disneyApi/blob/main/README.md#endpoints-movies)
+ - [Endpoints Generos](https://github.com/Tabitoo/disneyApi/blob/main/README.md#endpoints-generos)
+ - [Endpoints Relations](https://github.com/Tabitoo/disneyApi/blob/main/README.md#endpoints-relations)
+
 
 ## Endpoints
 
@@ -133,7 +141,7 @@ http://localhost:3000/api/Characters
 
 ```
 
-Tambien es posible pasar parametros de busqueda en el url, solo se acepta uno a la vez. Los parametros disponibles son los siguientes:
+También es posible pasar parametros de busqueda en el url, solo se acepta uno a la vez. Los parámetros disponibles son los siguientes:
 
 - name -> Nombre del personaje
 - age -> Edad del personaje
@@ -198,7 +206,12 @@ http://localhost:3000/api/characters/idMovie
                 "date": "1994-07-07",
                 "ranking": 10,
                 "image": "https://i.imgur.com/cLQMqbc.jpeg",
-                "genreid": 2
+                "genreid": 2,
+                "Character_movie": {
+                    "id": 1,
+                    "characterid": 1,
+                    "movieid": 1
+                }
             }
         ]
     }
@@ -276,7 +289,7 @@ http://localhost:3000/api/characters/edit/idCharacter
 
 ```
 
-No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algun error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
+No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algún error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
 
 ```
 {
@@ -356,7 +369,7 @@ http://localhost:3000/api/movies
 }
 ```
 
-Tambien es posible pasar parametros de busqueda en el url, solo se acepta uno a la vez. Los parametros disponibles son los siguientes:
+Tambien es posible pasar parámetros de busqueda en el url, solo se acepta uno a la vez. Los párametros disponibles son los siguientes:
 
 - title -> Nombre de la pelicula
 - genre -> id del genero de la pelicula
@@ -501,7 +514,7 @@ http://localhost:3000/api/movies/edit/idMovie
 
 ```
 
-No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algun error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
+No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algún error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
 
 ```
 {
@@ -531,13 +544,266 @@ http://localhost:3000/api/movies/delete/idMovie
 
 ```
 
+## Endpoints Generos
+
+### Genres
+
+Method : GET
+
+```
+http://localhost:3000/api/genres
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "ok"
+    },
+    "data": [
+        {
+            "id": 1,
+            "name": "Adventure",
+            "image": "https://i.imgur.com/vBfpplz.png"
+        },
+        {
+            "id": 2,
+            "name": "Drama",
+            "image": "https://i.imgur.com/PkSPUlC.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Musical",
+            "image": "https://i.imgur.com/YqlKvlo.jpg"
+        }
+    ]
+}
+```
 
 
+### Crear un genero
+Method : POST
+
+```
+http://localhost:3000/api/genres/create
+
+```
+
+#### Body
+
+```
+{
+  name : value -> string,
+  image : value -> string
+  
+}
+
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg : genero creado correctamente
+  },
+  data : {
+    nombre : value,
+    image : value
+  }
+}
+
+```
+
+### Editar un Genero
+Method : PUT  
+
+```
+http://localhost:3000/api/genres/edit/idGenre
+
+```
+
+#### Body
+
+```
+{
+  title : value -> string,
+  image : value -> string,
+}
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg : genero actualizado
+  }
+}
+
+```
+
+No todos los campos del Body son obligatorios, puede enviar solo los campos que quiere actualizar, en caso de algún error o de enviar algunos de los campos con información que ya esta almacenada, recibirá la siguiente respuesta:
+
+```
+{
+  meta : {
+    status : 500,
+    msg : "Error al actualizar"
+  },
+  
+}
+```
+
+### Eliminar un Genero
+Method : DELETE
+
+Puede eliminar un genero de la siguiente manera
+```
+http://localhost:3000/api/genres/delete/idGenre
+```
+
+#### Response
+
+```
+{
+  status : 200,
+  msg : "Elemento borrado correctamente"
+}
+
+```
+
+## Endpoints Relations
+
+Como un personaje puede aparecer en varias peliculas, para relacionarlos se utiliza el modelo de relación muchos a muchos. Con el fin de logras dichas relaciones se utiliza el endpoint relations para generarlas, tendrá que realizar esta accion cada vez que cree una pelicula y un personaje que estén relacionados.
 
 
+### Crear una relación
+Method : POST
+
+```
+http://localhost:3000/api/relations/create
+
+```
+
+#### Body
+
+```
+{
+  character : character name -> string,
+  movie : movie title -> string
+  
+}
+
+```
+
+Puede ver todas las relaciones creadas de la siguiente forma:
 
 
+```
+http://localhost:3000/api/relations
 
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "ok"
+    },
+    "data": [
+        {
+            "id": 1,
+            "characterid": 1,
+            "movieid": 1
+        },
+        {
+            "id": 2,
+            "characterid": 2,
+            "movieid": 3
+        },
+        {
+            "id": 3,
+            "characterid": 2,
+            "movieid": 2
+        },
+        {
+            "id": 4,
+            "characterid": 4,
+            "movieid": 4
+        },
+        {
+            "id": 5,
+            "characterid": 5,
+            "movieid": 4
+        }
+    ]
+}
+
+```
+
+### Editar una relación
+Method : PUT  
+
+```
+http://localhost:3000/api/relations/edit/idRelation
+
+```
+
+#### Body
+
+```
+{
+    character : character name -> string,
+    movie : movie title -> string
+}
+```
+
+#### Response 
+
+```
+{
+  meta : {
+    status : 200,
+    msg :  relacion actualizada
+  }
+}
+
+```
+
+Al contrario que los casos anteriores, al actualizar una relación es necesario todos los campos del body, de lo contrario recibirá la siguiente respuesta: 
+```
+{
+    "meta": {
+        "status": 500,
+        "msg": "Los campos character y movie no pueden ser nulos"
+    }
+}
+```
+
+### Eliminar una Relacion
+Method : DELETE
+
+Puede eliminar una relación de la siguiente manera
+```
+http://localhost:3000/api/relations/delete/idRelation
+```
+
+#### Response
+
+```
+{
+  status : 200,
+  msg : "Elemento borrado correctamente"
+}
+
+```
 
 
 
