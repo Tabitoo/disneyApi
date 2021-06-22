@@ -19,6 +19,11 @@ EMAIL = "your_email"
 
 Para enviar un mail a la hora de que un usuario se registre, se utiliza como servicio **Sendgrid** , puede conseguir su API KEY siguiendo este [tutorial](https://docs.sendgrid.com/for-developers/sending-email/api-getting-started)
 
+## Secciones
+
+### Endpoints Characters
+
+
 ## Endpoints
 
 ### Register 
