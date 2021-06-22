@@ -652,6 +652,78 @@ http://localhost:3000/api/genres/delete/idGenre
 
 ```
 
+## Endpoints Relations
+
+Como un personaje puede aparecer en varias peliculas, para relacionarlos se utiliza el modelo de relacion muchos a muchos. Con el fin de logras dichas relaciones se utiliza el endpoint relations para generarlas, tendrá que realizar esta accion cada vez que cree una pelicula y un personaje que estén relacionados.
+
+
+### Crear una relacion
+Method : POST
+
+```
+http://localhost:3000/api/relations/create
+
+```
+
+#### Body
+
+```
+{
+  character : character name -> string,
+  movie : movie title -> string
+  
+}
+
+```
+
+Puede ver todas las relaciones creadas de la siguiente forma:
+
+
+```
+http://localhost:3000/api/relations
+
+```
+
+#### Response
+
+```
+{
+    "meta": {
+        "status": 200,
+        "msg": "ok"
+    },
+    "data": [
+        {
+            "id": 1,
+            "characterid": 1,
+            "movieid": 1
+        },
+        {
+            "id": 2,
+            "characterid": 2,
+            "movieid": 3
+        },
+        {
+            "id": 3,
+            "characterid": 2,
+            "movieid": 2
+        },
+        {
+            "id": 4,
+            "characterid": 4,
+            "movieid": 4
+        },
+        {
+            "id": 5,
+            "characterid": 5,
+            "movieid": 4
+        }
+    ]
+}
+
+
+```
+
 
 
 
