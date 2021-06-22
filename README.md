@@ -21,7 +21,10 @@ Para enviar un mail a la hora de que un usuario se registre, se utiliza como ser
 
 ## Secciones
 
-### Endpoints Characters
+### [Endpoints Characters](https://github.com/Tabitoo/disneyApi/blob/main/README.md#endpoints-characters)
+### [Endpoints Movies](https://github.com/Tabitoo/disneyApi/blob/main/README.md#endpoints-movies)
+### [Endpoints Generos](https://github.com/Tabitoo/disneyApi/blob/main/README.md#endpoints-generos)
+### [Endpoints Relations](https://github.com/Tabitoo/disneyApi/blob/main/README.md#endpoints-relations)
 
 
 ## Endpoints
