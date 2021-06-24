@@ -21,7 +21,7 @@ module.exports = (req,res,next) => {
                 return res.status(404).json({
                     meta : {
                         status : 404,
-                        msg : "Usuario no registrado jaja"
+                        msg : "Usuario no registrado"
                     }
                 })
             }
